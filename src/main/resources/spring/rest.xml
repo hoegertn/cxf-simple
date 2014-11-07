@@ -1,0 +1,34 @@
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+	xmlns:cxf="http://cxf.apache.org/core"
+	xsi:schemaLocation="http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd">
+
+	<jaxrs:server id="restService" address="http://0.0.0.0:${svc.port:8080}/public" depends-on="cxf-engine">
+		<jaxrs:serviceBeans>
+			<bean class="de.hoegertn.demo.cxfsimple.rest.DemoAPIImpl" />
+		</jaxrs:serviceBeans>
+		<jaxrs:features>
+		</jaxrs:features>
+		<jaxrs:providers>
+			<ref bean="jsonProvider" />
+			<!-- <bean class="de.taimos.resultsservice.server.context.AuthenticationHandler" /> -->
+			<ref bean="exMapper" />
+		</jaxrs:providers>
+	</jaxrs:server>
+	<jaxrs:server id="privateRestService" address="http://0.0.0.0:${svc.port:8080}/private" depends-on="cxf-engine">
+		<jaxrs:serviceBeans>
+			<bean class="de.hoegertn.demo.cxfsimple.rest.PrivateAPIImpl" />
+		</jaxrs:serviceBeans>
+		<jaxrs:features>
+		</jaxrs:features>
+		<jaxrs:providers>
+			<ref bean="jsonProvider" />
+			<!-- Authenticate user -->
+			<bean class="de.hoegertn.demo.cxfsimple.auth.AuthenticationHandler" />
+			<!-- Filter access based on user roles -->
+			<bean class="de.hoegertn.demo.cxfsimple.auth.RolesFilter" />
+			<ref bean="exMapper" />
+		</jaxrs:providers>
+	</jaxrs:server>
+</beans>
