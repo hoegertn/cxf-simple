@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import de.taimos.httputils.WS;
 
-public class PrivateTest1 extends BasicTest {
+public class PrivateTest extends BasicTest {
 	
 	@Test
 	public void testNotLoggedIn() {
